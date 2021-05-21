@@ -7,10 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.androiddevchallenge.model.Recipe
 import com.example.androiddevchallenge.model.RecipesData
 import com.example.androiddevchallenge.ui.theme.DarkGray
@@ -162,13 +160,33 @@ fun ExpandedCard(onClick: () -> Unit = {}) {
                     .fillMaxWidth()
                     .height(8.dp)
             )
-            Row {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 val centerVerticalAlignment = Modifier.align(Alignment.CenterVertically)
                 RecipeName(recipe, centerVerticalAlignment.weight(1f))
-                VerticalDivider(centerVerticalAlignment)
+                PlusMinusButton(ButtonStyle.MINUS)
                 RecipePrice(recipe, centerVerticalAlignment)
+                PlusMinusButton(ButtonStyle.PLUS)
             }
         }
+    }
+}
+
+enum class ButtonStyle {
+    PLUS, MINUS
+}
+
+@Composable
+fun PlusMinusButton(style: ButtonStyle) {
+    Button(
+        modifier = Modifier.size(48.dp),
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+        onClick = { /*TODO*/ },
+    ) {
+        val text = when (style) {
+            ButtonStyle.PLUS -> "+"
+            ButtonStyle.MINUS -> "-"
+        }
+        Text(text = text, fontSize = 18.sp)
     }
 }
 
@@ -257,6 +275,6 @@ fun ColorView3(color: Color, modifier: Modifier = Modifier) {
 @Composable
 fun ColorViewPreview() {
     MyTheme {
-        RecipesListScreen()
+        ExpandedCard()
     }
 }
