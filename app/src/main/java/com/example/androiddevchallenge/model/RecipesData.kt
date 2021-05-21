@@ -20,7 +20,7 @@ object RecipesData {
     val randomPrice: Double
         get() = ((Random.nextInt(500, 2000) / 5) * 5).toDouble()
 
-    private val colors = listOf(purple200, teal200, Yellow800, Red300)
+    val colors = listOf(purple200, teal200, Yellow800, Red300)
     val randomColor: Color
         get() = colors.random()
 

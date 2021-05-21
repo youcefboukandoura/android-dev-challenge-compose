@@ -24,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 
 val Yellow800 = Color(0xFFF29F05)
 val Red300 = Color(0xFFEA6D7E)
+val DarkGray = Color(0xFF181818)
 
 private val DarkColorPalette = darkColors(
     primary = Yellow800,
