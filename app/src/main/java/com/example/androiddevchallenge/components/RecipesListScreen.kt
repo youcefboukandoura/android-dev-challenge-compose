@@ -2,7 +2,6 @@ package com.example.androiddevchallenge.components
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,7 +11,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,23 +70,6 @@ private fun BottomView() {
         AddButton()
     }
 }
-
-@Composable
-fun EmptyView(modifier: Modifier) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(DarkGray),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = "No recipes added",
-            color = MaterialTheme.colors.onSurface,
-            style = MaterialTheme.typography.h5
-        )
-    }
-}
-
 
 @Composable
 fun AddButton() {
@@ -191,41 +172,6 @@ fun PlusMinusButton(style: ButtonStyle) {
 }
 
 @Composable
-fun RecipePrice(
-    recipe: Recipe,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = String.format("$ %.2f", recipe.price / 100),
-        modifier = modifier
-            .padding(start = 8.dp)
-            .width(52.dp),
-        style = MaterialTheme.typography.subtitle2.copy(fontStyle = FontStyle.Italic)
-    )
-}
-
-@Composable
-fun RecipeName(
-    recipe: Recipe,
-    modifier: Modifier = Modifier
-) {
-    Text(
-        text = recipe.name,
-        modifier.padding(start = 8.dp, end = 8.dp)
-    )
-}
-
-@Composable
-fun VerticalDivider(modifier: Modifier) {
-    Spacer(
-        modifier = modifier
-            .width(1.dp)
-            .height(42.dp)
-            .background(Color.DarkGray)
-    )
-}
-
-@Composable
 fun ColorView(color: Color, modifier: Modifier) {
     Spacer(
         modifier = modifier
@@ -273,8 +219,8 @@ fun ColorView3(color: Color, modifier: Modifier = Modifier) {
 
 @Preview
 @Composable
-fun ColorViewPreview() {
+fun Preview() {
     MyTheme {
-        ExpandedCard()
+        RecipesListScreen()
     }
 }
