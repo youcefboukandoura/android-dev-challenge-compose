@@ -50,28 +50,6 @@ fun RecipeListView(modifier: Modifier) {
 }
 
 @Composable
-private fun BottomView() {
-    val itemsSelected by remember { mutableStateOf(true) }
-    if (itemsSelected) {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        ) {
-            Text(
-                text = "Total price",
-                modifier = Modifier.weight(1f),
-                color = MaterialTheme.colors.onSurface
-            )
-            Text(text = "$ X", color = MaterialTheme.colors.onSurface)
-        }
-        AddButton()
-    } else {
-        AddButton()
-    }
-}
-
-@Composable
 fun AddButton() {
     var text by remember { mutableStateOf("Add recipe") }
     Button(
@@ -156,6 +134,9 @@ enum class ButtonStyle {
     PLUS, MINUS
 }
 
+/**
+ * Bonus part - add onClick logic here
+ */
 @Composable
 fun PlusMinusButton(style: ButtonStyle) {
     Button(
@@ -191,6 +172,9 @@ fun ColorView2(color: Color, modifier: Modifier = Modifier) {
     )
 }
 
+/**
+ * Use this view for Bonus task
+ */
 @Composable
 fun ColorFilter() {
     Row(
@@ -213,13 +197,20 @@ fun ColorView3(color: Color, modifier: Modifier = Modifier) {
             .width(64.dp)
             .height(24.dp)
             .background(color, shape = RoundedCornerShape(12.dp))
-//            .border(2.dp, Color.White, RoundedCornerShape(12.dp))
     )
 }
 
 @Preview
 @Composable
-fun Preview() {
+fun BonusComponentsReview() {
+    MyTheme {
+        ColorFilter()
+    }
+}
+
+@Preview
+@Composable
+fun ScreenPreview() {
     MyTheme {
         RecipesListScreen()
     }
