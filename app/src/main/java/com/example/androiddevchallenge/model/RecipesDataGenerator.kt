@@ -4,7 +4,12 @@ import androidx.compose.ui.graphics.Color
 import com.example.androiddevchallenge.ui.theme.*
 import kotlin.random.Random
 
-object RecipesData {
+/**
+ * PLEASE DON'T MODIFY
+ * Generates data which is ready to be displayed on the UI
+ * For clarity please add all custom code in [RecipesListViewModel]
+ */
+object RecipesDataGenerator {
 
     fun generateRecipes(number: Int): MutableList<Recipe> {
         val list = mutableListOf<Recipe>()

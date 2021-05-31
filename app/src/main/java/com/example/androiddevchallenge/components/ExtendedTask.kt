@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.androiddevchallenge.model.Recipe
-import com.example.androiddevchallenge.model.RecipesData
+import com.example.androiddevchallenge.model.RecipesDataGenerator
 
 
 /**
@@ -42,9 +42,9 @@ fun ExpandedCard(onClick: () -> Unit = {}) {
                 .clickable { onClick() }
         ) {
             val recipe = Recipe(
-                name = RecipesData.names.random(),
-                price = RecipesData.randomPrice,
-                color = RecipesData.randomColor
+                name = RecipesDataGenerator.names.random(),
+                price = RecipesDataGenerator.randomPrice,
+                color = RecipesDataGenerator.randomColor
             )
             ColorView2(color = recipe.color)
             Spacer(

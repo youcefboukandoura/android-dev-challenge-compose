@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.model.Recipe
-import com.example.androiddevchallenge.model.RecipesData
+import com.example.androiddevchallenge.model.RecipesDataGenerator
 import com.example.androiddevchallenge.ui.theme.DarkGray
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
@@ -91,9 +91,9 @@ fun RecipeCard(onClick: () -> Unit = {}) {
             )
     ) {
         val recipe = Recipe(
-            name = RecipesData.names.random(),
-            price = RecipesData.randomPrice,
-            color = RecipesData.randomColor
+            name = RecipesDataGenerator.names.random(),
+            price = RecipesDataGenerator.randomPrice,
+            color = RecipesDataGenerator.randomColor
         )
         Row(
             Modifier
@@ -120,9 +120,9 @@ fun RecipeCard(onClick: () -> Unit = {}) {
 @Composable
 fun ConfirmDeletionCard(onClick: () -> Unit = {}) {
     val recipeToDelete = Recipe(
-        name = RecipesData.names.random(),
-        price = RecipesData.randomPrice,
-        color = RecipesData.randomColor
+        name = RecipesDataGenerator.names.random(),
+        price = RecipesDataGenerator.randomPrice,
+        color = RecipesDataGenerator.randomColor
     )
     Card(
         Modifier
@@ -183,7 +183,7 @@ fun ColorFilter() {
             .padding(vertical = 8.dp)
     ) {
         Spacer(modifier = Modifier.weight(1f))
-        RecipesData.colors.forEach { color ->
+        RecipesDataGenerator.colors.forEach { color ->
             ColorView3(color = color)
             Spacer(modifier = Modifier.weight(1f))
         }
