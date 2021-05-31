@@ -116,7 +116,7 @@ fun ConfirmationButton(text: String, modifier: Modifier = Modifier, onClick: () 
 
 @Preview
 @Composable
-fun ComponentsPreview() {
+fun ComponentsPreview2() {
     val recipe = Recipe(name = "My Recipe", price = 12.99, color = Color.Red)
     MyTheme {
         Surface {

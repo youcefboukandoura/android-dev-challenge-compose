@@ -1,48 +1,54 @@
 package com.example.androiddevchallenge.components
 
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.androiddevchallenge.model.Recipe
 import com.example.androiddevchallenge.model.RecipesData
 import com.example.androiddevchallenge.ui.theme.DarkGray
 import com.example.androiddevchallenge.ui.theme.MyTheme
 
+/**
+ * Main task screen composable
+ */
 @Composable
 fun RecipesListScreen() {
     Column {
         val emptyView = true
-//        if (emptyView) {
-//            EmptyView(Modifier.weight(1f))
-//        } else {
-        RecipeListView(Modifier.weight(1f))
-//        }
+        if (emptyView) {
+            EmptyView(Modifier.weight(1f))
+        } else {
+            RecipeListView(Modifier.weight(1f))
+        }
 
         BottomView()
     }
 }
 
+/**
+ * Displays list of recipes
+ */
 @Composable
 fun RecipeListView(modifier: Modifier) {
     LazyColumn(
         modifier = modifier.background(DarkGray)
     ) {
-        items(5) {
+        items(0) {
             RecipeCard()
-            ConfirmDeletionCard()
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -52,26 +58,37 @@ fun RecipeListView(modifier: Modifier) {
     }
 }
 
+/**
+ * Draws an "Add" button
+ */
 @Composable
 fun AddButton() {
-    var text by remember { mutableStateOf("Add recipe") }
     Button(
-        onClick = { text = "Clicked!" },
+        onClick = { /* TODO add a recipe */ },
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
     ) {
-        Text(text = text)
+        Text(text = "Add recipe")
     }
 }
 
+/**
+ * Card which displays a recipe with name, color and price
+ */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun RecipeCard(onClick: () -> Unit = {}) {
     Card(
         Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
-            .clickable { onClick() }
+            .combinedClickable(
+                onLongClick = {
+                    /* TODO ask to remove the item using ConfirmDeletionCard */
+                },
+                onClick = {}
+            )
     ) {
         val recipe = Recipe(
             name = RecipesData.names.random(),
@@ -97,6 +114,9 @@ fun RecipeCard(onClick: () -> Unit = {}) {
     }
 }
 
+/**
+ * Card which shows a request to remove a particular recipe from the list
+ */
 @Composable
 fun ConfirmDeletionCard(onClick: () -> Unit = {}) {
     val recipeToDelete = Recipe(
@@ -137,64 +157,9 @@ fun ConfirmDeletionCard(onClick: () -> Unit = {}) {
     }
 }
 
-@Composable
-fun ExpandedCard(onClick: () -> Unit = {}) {
-    Card(
-        Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth()
-    ) {
-        Column(
-            Modifier
-                .padding(16.dp)
-                .fillMaxWidth()
-                .animateContentSize()
-                .clickable { onClick() }
-        ) {
-            val recipe = Recipe(
-                name = RecipesData.names.random(),
-                price = RecipesData.randomPrice,
-                color = RecipesData.randomColor
-            )
-            ColorView2(color = recipe.color)
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-            )
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val centerVerticalAlignment = Modifier.align(Alignment.CenterVertically)
-                RecipeName(recipe, centerVerticalAlignment.weight(1f))
-                PlusMinusButton(ButtonStyle.MINUS)
-                RecipePrice(recipe, centerVerticalAlignment)
-                PlusMinusButton(ButtonStyle.PLUS)
-            }
-        }
-    }
-}
-
-enum class ButtonStyle {
-    PLUS, MINUS
-}
-
 /**
- * Bonus part - add onClick logic here
+ * Small color indicator for a recipe
  */
-@Composable
-fun PlusMinusButton(style: ButtonStyle) {
-    Button(
-        modifier = Modifier.size(48.dp),
-        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-        onClick = { /*TODO*/ },
-    ) {
-        val text = when (style) {
-            ButtonStyle.PLUS -> "+"
-            ButtonStyle.MINUS -> "-"
-        }
-        Text(text = text, fontSize = 18.sp)
-    }
-}
-
 @Composable
 fun ColorView(color: Color, modifier: Modifier) {
     Spacer(
@@ -205,17 +170,9 @@ fun ColorView(color: Color, modifier: Modifier) {
     )
 }
 
-@Composable
-fun ColorView2(color: Color, modifier: Modifier = Modifier) {
-    Spacer(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(86.dp)
-            .background(color, shape = RoundedCornerShape(6.dp))
-    )
-}
-
 /**
+ * Displays a list of color tags available for filtering. Check [BonusComponentsReview]
+ *
  * Use this view for Bonus task
  */
 @Composable
@@ -253,8 +210,22 @@ fun BonusComponentsReview() {
 
 @Preview
 @Composable
+fun ComponentsPreview() {
+    MyTheme {
+        Surface {
+            Column {
+                RecipeCard()
+                Spacer(modifier = Modifier.size(8.dp))
+                ConfirmDeletionCard()
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
 fun ScreenPreview() {
     MyTheme {
-        ConfirmDeletionCard()
+        RecipesListScreen()
     }
 }

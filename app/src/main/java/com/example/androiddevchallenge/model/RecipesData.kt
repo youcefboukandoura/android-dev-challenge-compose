@@ -1,10 +1,7 @@
 package com.example.androiddevchallenge.model
 
 import androidx.compose.ui.graphics.Color
-import com.example.androiddevchallenge.ui.theme.Red300
-import com.example.androiddevchallenge.ui.theme.Yellow800
-import com.example.androiddevchallenge.ui.theme.purple200
-import com.example.androiddevchallenge.ui.theme.teal200
+import com.example.androiddevchallenge.ui.theme.*
 import kotlin.random.Random
 
 object RecipesData {
@@ -20,7 +17,7 @@ object RecipesData {
     val randomPrice: Double
         get() = ((Random.nextInt(500, 2000) / 5) * 5).toDouble()
 
-    val colors = listOf(purple200, teal200, Yellow800, Red300)
+    val colors = listOf(purple200, lightGreen400, Yellow800, Red300)
     val randomColor: Color
         get() = colors.random()
 
