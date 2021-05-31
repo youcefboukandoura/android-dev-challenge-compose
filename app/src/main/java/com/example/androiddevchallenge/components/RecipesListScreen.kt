@@ -10,7 +10,9 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -23,11 +25,11 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
 fun RecipesListScreen() {
     Column {
         val emptyView = true
-        if (emptyView) {
-            EmptyView(Modifier.weight(1f))
-        } else {
-            RecipeListView(Modifier.weight(1f))
-        }
+//        if (emptyView) {
+//            EmptyView(Modifier.weight(1f))
+//        } else {
+        RecipeListView(Modifier.weight(1f))
+//        }
 
         BottomView()
     }
@@ -38,8 +40,9 @@ fun RecipeListView(modifier: Modifier) {
     LazyColumn(
         modifier = modifier.background(DarkGray)
     ) {
-        items(0) {
+        items(5) {
             RecipeCard()
+            ConfirmDeletionCard()
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -90,6 +93,46 @@ fun RecipeCard(onClick: () -> Unit = {}) {
             )
             VerticalDivider(centerVerticalAlignment)
             RecipePrice(recipe, centerVerticalAlignment)
+        }
+    }
+}
+
+@Composable
+fun ConfirmDeletionCard(onClick: () -> Unit = {}) {
+    val recipeToDelete = Recipe(
+        name = RecipesData.names.random(),
+        price = RecipesData.randomPrice,
+        color = RecipesData.randomColor
+    )
+    Card(
+        Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+            .padding(horizontal = 16.dp)
+    ) {
+
+        Column(
+            Modifier
+                .background(color = recipeToDelete.color)
+                .padding(16.dp),
+        ) {
+            Text(
+                text = "Remove from the list?",
+                modifier = Modifier.padding(8.dp)
+            )
+            HorizontalDivider()
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                val weightModifier = Modifier.weight(1f)
+                ConfirmationButton(text = "Yes", modifier = weightModifier) {
+                    /* TODO remove this item from the list */
+                }
+                ConfirmationButton(text = "No", modifier = weightModifier) {
+                    /* TODO return to RecipeCard */
+                }
+            }
         }
     }
 }
@@ -212,6 +255,6 @@ fun BonusComponentsReview() {
 @Composable
 fun ScreenPreview() {
     MyTheme {
-        RecipesListScreen()
+        ConfirmDeletionCard()
     }
 }

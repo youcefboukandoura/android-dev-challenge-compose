@@ -2,9 +2,7 @@ package com.example.androiddevchallenge.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -92,6 +90,28 @@ fun VerticalDivider(modifier: Modifier) {
             .height(42.dp)
             .background(Color.DarkGray)
     )
+}
+
+@Composable
+fun HorizontalDivider(modifier: Modifier = Modifier) {
+    Spacer(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(1.dp)
+            .background(Color.LightGray)
+    )
+}
+
+@Composable
+fun ConfirmationButton(text: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    Button(
+        modifier = modifier,
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
+        elevation = ButtonDefaults.elevation(0.dp, 0.dp)
+    ) {
+        Text(text = text)
+    }
 }
 
 @Preview
