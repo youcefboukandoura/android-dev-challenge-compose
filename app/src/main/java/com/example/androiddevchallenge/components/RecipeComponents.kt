@@ -12,7 +12,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.androiddevchallenge.MainViewModel
 import com.example.androiddevchallenge.model.Recipe
 import com.example.androiddevchallenge.ui.theme.DarkGray
 import com.example.androiddevchallenge.ui.theme.MyTheme
@@ -67,9 +66,9 @@ fun RecipePrice(
  */
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun BottomView(viewModel: MainViewModel) {
+fun BottomView(filteredRecipes: List<Recipe>, onAddRecipe: () -> Unit = {}) {
     Column {
-        AnimatedVisibility(viewModel.filteredRecipes.isNotEmpty()) {
+        AnimatedVisibility(filteredRecipes.isNotEmpty()) {
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -81,12 +80,12 @@ fun BottomView(viewModel: MainViewModel) {
                     color = MaterialTheme.colors.onSurface
                 )
                 Text(
-                    text = "$ ${String.format("%.2f", viewModel.filteredRecipes.getTotalPrice())}",
+                    text = "$ ${String.format("%.2f", filteredRecipes.getTotalPrice())}",
                     color = MaterialTheme.colors.onSurface
                 )
             }
         }
-        AddButton(onAddRecipeClick = { viewModel.onAddRecipe() })
+        AddButton(onAddRecipeClick = { onAddRecipe() })
     }
 
 }
@@ -134,11 +133,10 @@ fun ComponentsPreview2() {
                 RecipePrice(recipe = recipe)
                 RecipeName(recipe = recipe)
                 VerticalDivider(modifier = Modifier.padding(16.dp))
-                BottomView(MainViewModel())
+                BottomView(mutableListOf())
             }
         }
     }
 }
 
-// todo : inspect why sumByDouble not returning correct decimal part
 fun List<Recipe>.getTotalPrice(): Double = this.sumByDouble { it.price } / 100

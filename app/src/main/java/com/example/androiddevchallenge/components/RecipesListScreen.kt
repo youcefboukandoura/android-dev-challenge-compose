@@ -53,7 +53,7 @@ fun RecipesListScreen(viewModel: MainViewModel) {
             )
         }
 
-        BottomView(viewModel)
+        BottomView(viewModel.recipes) { viewModel.onAddRecipe() }
     }
 }
 
