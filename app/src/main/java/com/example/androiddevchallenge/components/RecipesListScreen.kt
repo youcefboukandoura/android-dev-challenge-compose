@@ -2,10 +2,7 @@ package com.example.androiddevchallenge.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,6 +30,7 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
 fun RecipesListScreen(viewModel: MainViewModel) {
     Column {
         ColorFilter(
+            viewModel.filterColor,
             viewModel.recipes
         ) { color -> viewModel.onColorFilterColor(color) }
         if (viewModel.filteredRecipes.isEmpty()) {
@@ -248,7 +246,11 @@ fun ColorView(color: Color, modifier: Modifier) {
  * Use this view for Bonus task
  */
 @Composable
-fun ColorFilter(recipes: List<Recipe>, onClick: (color: Color) -> Unit = {}) {
+fun ColorFilter(
+    selectedColor: Color = Color.Transparent,
+    recipes: List<Recipe>,
+    onClick: (color: Color) -> Unit = {}
+) {
     Row(
         Modifier
             .background(DarkGray)
@@ -256,11 +258,13 @@ fun ColorFilter(recipes: List<Recipe>, onClick: (color: Color) -> Unit = {}) {
     ) {
         Spacer(modifier = Modifier.weight(1f))
         RecipesDataGenerator.colors.forEach { color ->
+            val borderColor = if (selectedColor == color) Color.White else Color.Transparent
             Text(
                 text = "${recipes.filter { it.color == color }.size} / ${recipes.size}",
                 textAlign = TextAlign.Center,
                 color = Color.White,
                 modifier = Modifier
+                    .border(3.dp, borderColor, shape = RoundedCornerShape(12.dp))
                     .clickable { onClick(color) }
                     .width(64.dp)
                     .height(24.dp)
@@ -276,7 +280,7 @@ fun ColorFilter(recipes: List<Recipe>, onClick: (color: Color) -> Unit = {}) {
 @Composable
 fun BonusComponentsReview() {
     MyTheme {
-        ColorFilter(arrayListOf())
+        ColorFilter(Color.Transparent, arrayListOf())
     }
 }
 

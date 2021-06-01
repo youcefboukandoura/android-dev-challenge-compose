@@ -25,7 +25,7 @@ import com.example.androiddevchallenge.model.RecipesDataGenerator
 
 class MainViewModel : ViewModel() {
 
-    var filterColor: Color? = null
+    var filterColor: Color by mutableStateOf(Color.Transparent)
 
     var recipes: List<Recipe> by mutableStateOf(listOf())
         private set
@@ -61,7 +61,7 @@ class MainViewModel : ViewModel() {
 
     fun onColorFilterColor(color: Color) {
         if (filterColor == color) {
-            filterColor = null
+            filterColor = Color.Transparent
             filteredRecipes = recipes
         } else {
             filterColor = color
@@ -73,7 +73,7 @@ class MainViewModel : ViewModel() {
     }
 
     private fun onColorFilterColor() {
-        filteredRecipes = if (filterColor != null) {
+        filteredRecipes = if (filterColor != Color.Transparent) {
             recipes.filter {
                 it.color == filterColor
             }
