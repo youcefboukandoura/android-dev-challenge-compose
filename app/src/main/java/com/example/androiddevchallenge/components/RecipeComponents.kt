@@ -77,7 +77,7 @@ fun BottomView(viewModel: MainViewModel) {
                 color = MaterialTheme.colors.onSurface
             )
             Text(
-                text = "$ ${String.format("%.2f", viewModel.recipes.getTotalPrice())}",
+                text = "$ ${String.format("%.2f", viewModel.filteredRecipes.getTotalPrice())}",
                 color = MaterialTheme.colors.onSurface
             )
         }

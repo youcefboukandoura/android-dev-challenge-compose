@@ -3,6 +3,7 @@ package com.example.androiddevchallenge.components
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.MainViewModel
@@ -29,19 +31,19 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
 @Composable
 fun RecipesListScreen(viewModel: MainViewModel) {
     Column {
-
-
-        println("recipe list ${viewModel.recipes.size}")
-        if (viewModel.recipes.isEmpty()) {
+        ColorFilter(
+            viewModel.recipes
+        ) { color -> viewModel.onColorFilterColor(color) }
+        if (viewModel.filteredRecipes.isEmpty()) {
             EmptyView(Modifier.weight(1f))
         } else {
             RecipeListView(
-                viewModel.recipes,
-                onRecipeClick = { recipeIndex ->
-                    viewModel.onRecipeClick(recipeIndex)
+                viewModel.filteredRecipes,
+                onRecipeLongClick = { recipeIndex ->
+                    viewModel.onRecipeLongClick(recipeIndex)
                 },
-                onDeleteRecipeClick = { recipeIndex ->
-                    viewModel.onDeleteRecipeClick(recipeIndex)
+                onDeleteRecipeClick = { recipe ->
+                    viewModel.onDeleteRecipeClick(recipe)
                 },
                 onCancelRecipeDeletionClick = { recipeIndex ->
                     viewModel.onCancelDeleteRecipeClick(recipeIndex)
@@ -60,8 +62,8 @@ fun RecipesListScreen(viewModel: MainViewModel) {
 @Composable
 fun RecipeListView(
     recipeList: List<Recipe>,
-    onRecipeClick: (recipeIndex: Int) -> Unit,
-    onDeleteRecipeClick: (recipeIndex: Int) -> Unit,
+    onRecipeLongClick: (recipeIndex: Int) -> Unit,
+    onDeleteRecipeClick: (recipeIndex: Recipe) -> Unit,
     onCancelRecipeDeletionClick: (recipeIndex: Int) -> Unit,
     modifier: Modifier
 
@@ -73,11 +75,11 @@ fun RecipeListView(
             // not sure if I should save click property in mode
             val recipe = recipeList[index]
             if (!recipe.clicked) {
-                RecipeCard(recipe, onClick = { onRecipeClick(index) })
+                RecipeCard(recipe, onLongClick = { onRecipeLongClick(index) })
             } else {
                 ConfirmDeletionCard(
                     recipe,
-                    onClick = { onDeleteRecipeClick(index) },
+                    onClick = { onDeleteRecipeClick(recipe) },
                     onCancelRecipeDeletionClick = { onCancelRecipeDeletionClick(index) })
             }
             Spacer(
@@ -109,17 +111,17 @@ fun AddButton(onAddRecipeClick: () -> Unit) {
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
+fun RecipeCard(recipe: Recipe, onLongClick: () -> Unit = {}) {
     Card(
         Modifier
             .padding(horizontal = 16.dp)
             .fillMaxWidth()
             .combinedClickable(
                 onLongClick = {
-                    println("on Long click")
+                    onLongClick()
                 },
                 onClick = {
-                    onClick()
+
                 }
             )
     ) {
@@ -203,7 +205,7 @@ fun ColorView(color: Color, modifier: Modifier) {
  * Use this view for Bonus task
  */
 @Composable
-fun ColorFilter() {
+fun ColorFilter(recipes: List<Recipe>, onClick: (color: Color) -> Unit = {}) {
     Row(
         Modifier
             .background(DarkGray)
@@ -211,27 +213,27 @@ fun ColorFilter() {
     ) {
         Spacer(modifier = Modifier.weight(1f))
         RecipesDataGenerator.colors.forEach { color ->
-            ColorView3(color = color)
+            Text(
+                text = "${recipes.filter { it.color == color }.size} / ${recipes.size}",
+                textAlign = TextAlign.Center,
+                color = Color.White,
+                modifier = Modifier
+                    .clickable { onClick(color) }
+                    .width(64.dp)
+                    .height(24.dp)
+                    .background(color, shape = RoundedCornerShape(12.dp)),
+            )
             Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
 
-@Composable
-fun ColorView3(color: Color, modifier: Modifier = Modifier) {
-    Spacer(
-        modifier = modifier
-            .width(64.dp)
-            .height(24.dp)
-            .background(color, shape = RoundedCornerShape(12.dp))
-    )
-}
 
 @Preview
 @Composable
 fun BonusComponentsReview() {
     MyTheme {
-        ColorFilter()
+        ColorFilter(arrayListOf())
     }
 }
 

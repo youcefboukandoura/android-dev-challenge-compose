@@ -18,36 +18,61 @@ package com.example.androiddevchallenge
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import com.example.androiddevchallenge.model.Recipe
 import com.example.androiddevchallenge.model.RecipesDataGenerator
 
 class MainViewModel : ViewModel() {
 
+    var filterColor: Color? = null
+
     var recipes: List<Recipe> by mutableStateOf(listOf())
+        private set
+
+    var filteredRecipes: List<Recipe> by mutableStateOf(recipes)
         private set
 
     fun onAddRecipe() {
         val createdRecipes = RecipesDataGenerator.generateRecipe()
         recipes = recipes + createdRecipes
+        onColorFilterColor()
     }
 
-    fun onRecipeClick(index: Int) {
-        recipes = recipes.toMutableList().also {
+    fun onRecipeLongClick(index: Int) {
+        filteredRecipes = filteredRecipes.toMutableList().also {
             it[index] = it[index].copy(clicked = true)
         }
     }
 
-    fun onDeleteRecipeClick(index: Int) {
+    fun onDeleteRecipeClick(recipe: Recipe) {
+        val findRecipe = recipes.find { it.id == recipe.id }
         recipes = recipes.toMutableList().also {
-            it.removeAt(index)
+            it.remove(findRecipe)
         }
+        onColorFilterColor()
     }
 
     fun onCancelDeleteRecipeClick(index: Int) {
-        recipes = recipes.toMutableList().also {
+        filteredRecipes = filteredRecipes.toMutableList().also {
             it[index] = it[index].copy(clicked = false)
         }
+    }
+
+    fun onColorFilterColor(color: Color) {
+        filterColor = color
+        filteredRecipes = recipes.filter {
+            it.color == color
+        }
+    }
+
+    private fun onColorFilterColor() {
+        filteredRecipes = if (filterColor != null) {
+            recipes.filter {
+                it.color == filterColor
+            }
+        } else recipes
+
     }
 
 }
