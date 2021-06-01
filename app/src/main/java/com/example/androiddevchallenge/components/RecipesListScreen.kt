@@ -53,8 +53,8 @@ fun RecipeListView(recipeList: List<Recipe>, modifier: Modifier) {
     LazyColumn(
         modifier = modifier.background(DarkGray)
     ) {
-        items(recipeList.size) {
-            RecipeCard()
+        items(recipeList.size) { index ->
+            RecipeCard(recipeList[index])
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -84,7 +84,7 @@ fun AddButton(onAddRecipeClick: () -> Unit) {
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RecipeCard(onClick: () -> Unit = {}) {
+fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
     Card(
         Modifier
             .padding(horizontal = 16.dp)
@@ -97,9 +97,9 @@ fun RecipeCard(onClick: () -> Unit = {}) {
             )
     ) {
         val recipe = Recipe(
-            name = RecipesDataGenerator.names.random(),
-            price = RecipesDataGenerator.randomPrice,
-            color = RecipesDataGenerator.randomColor
+            name = recipe.name,
+            price = recipe.price,
+            color = recipe.color
         )
         Row(
             Modifier
@@ -220,7 +220,7 @@ fun ComponentsPreview() {
     MyTheme {
         Surface {
             Column {
-                RecipeCard()
+                RecipeCard(RecipesDataGenerator.generateRecipe())
                 Spacer(modifier = Modifier.size(8.dp))
                 ConfirmDeletionCard()
             }

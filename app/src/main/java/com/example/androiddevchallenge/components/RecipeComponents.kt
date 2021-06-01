@@ -76,9 +76,12 @@ fun BottomView(viewModel: MainViewModel) {
                 modifier = Modifier.weight(1f),
                 color = MaterialTheme.colors.onSurface
             )
-            Text(text = "$ X", color = MaterialTheme.colors.onSurface)
+            Text(
+                text = "$ ${String.format("%.2f", viewModel.recipes.getTotalPrice())}",
+                color = MaterialTheme.colors.onSurface
+            )
         }
-        AddButton(onAddRecipeClick = {viewModel.onAddRecipe()})
+        AddButton(onAddRecipeClick = { viewModel.onAddRecipe() })
     }
 
 }
@@ -131,3 +134,6 @@ fun ComponentsPreview2() {
         }
     }
 }
+
+// todo : inspect why sumByDouble not returning correct decimal part
+fun List<Recipe>.getTotalPrice(): Double = this.sumByDouble { it.price } / 100
