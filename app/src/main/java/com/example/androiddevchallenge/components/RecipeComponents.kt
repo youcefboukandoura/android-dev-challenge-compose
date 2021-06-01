@@ -1,5 +1,7 @@
 package com.example.androiddevchallenge.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -63,23 +65,26 @@ fun RecipePrice(
 /**
  * Static box with Price + Button
  */
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BottomView(viewModel: MainViewModel) {
     Column {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 8.dp)
-        ) {
-            Text(
-                text = "Total price",
-                modifier = Modifier.weight(1f),
-                color = MaterialTheme.colors.onSurface
-            )
-            Text(
-                text = "$ ${String.format("%.2f", viewModel.filteredRecipes.getTotalPrice())}",
-                color = MaterialTheme.colors.onSurface
-            )
+        AnimatedVisibility(viewModel.filteredRecipes.isNotEmpty()) {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                Text(
+                    text = "Total price",
+                    modifier = Modifier.weight(1f),
+                    color = MaterialTheme.colors.onSurface
+                )
+                Text(
+                    text = "$ ${String.format("%.2f", viewModel.filteredRecipes.getTotalPrice())}",
+                    color = MaterialTheme.colors.onSurface
+                )
+            }
         }
         AddButton(onAddRecipeClick = { viewModel.onAddRecipe() })
     }

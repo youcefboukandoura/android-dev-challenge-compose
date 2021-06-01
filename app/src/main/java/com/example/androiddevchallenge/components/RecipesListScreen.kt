@@ -1,5 +1,6 @@
 package com.example.androiddevchallenge.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -8,10 +9,10 @@ import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.DismissDirection.EndToStart
+import androidx.compose.material.DismissDirection.StartToEnd
+import androidx.compose.material.DismissValue.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -59,6 +60,7 @@ fun RecipesListScreen(viewModel: MainViewModel) {
 /**
  * Displays list of recipes
  */
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RecipeListView(
     recipeList: List<Recipe>,
@@ -75,7 +77,7 @@ fun RecipeListView(
             // not sure if I should save click property in mode
             val recipe = recipeList[index]
             if (!recipe.clicked) {
-                RecipeCard(recipe, onLongClick = { onRecipeLongClick(index) })
+                RecipeCard(recipe, onDeleteClick = { onRecipeLongClick(index) })
             } else {
                 ConfirmDeletionCard(
                     recipe,
@@ -109,39 +111,80 @@ fun AddButton(onAddRecipeClick: () -> Unit) {
 /**
  * Card which displays a recipe with name, color and price
  */
+@ExperimentalMaterialApi
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RecipeCard(recipe: Recipe, onLongClick: () -> Unit = {}) {
-    Card(
-        Modifier
-            .padding(horizontal = 16.dp)
-            .fillMaxWidth()
-            .combinedClickable(
-                onLongClick = {
-                    onLongClick()
-                },
-                onClick = {
-
+fun RecipeCard(recipe: Recipe, onDeleteClick: () -> Unit = {}) {
+    var dismissed by remember { mutableStateOf(false) }
+    val dismissState = rememberDismissState(
+        confirmStateChange = {
+            if (it == DismissedToEnd) {
+                dismissed = !dismissed
+            }
+            if (it == DismissedToStart) {
+                onDeleteClick()
+            }
+            it != DismissedToEnd
+        }
+    )
+    SwipeToDismiss(
+        state = dismissState,
+        modifier = Modifier.padding(vertical = 4.dp),
+        directions = setOf(EndToStart),
+        dismissThresholds = { direction ->
+            FractionalThreshold(if (direction == EndToStart) 0.25f else 0.5f)
+        },
+        background = {
+            val direction = dismissState.dismissDirection ?: return@SwipeToDismiss
+            val color by animateColorAsState(
+                when (dismissState.targetValue) {
+                    Default -> Color.LightGray
+                    DismissedToEnd -> Color.Green
+                    DismissedToStart -> recipe.color
                 }
             )
-    ) {
-        Row(
-            Modifier
-                .padding(16.dp)
-                .animateContentSize()
-        ) {
-            val centerVerticalAlignment = Modifier.align(Alignment.CenterVertically)
-            ColorView(color = recipe.color, centerVerticalAlignment)
-            RecipeName(
-                recipe,
-                centerVerticalAlignment
-                    .weight(1f)
-                    .padding(start = 8.dp)
-            )
-            VerticalDivider(centerVerticalAlignment)
-            RecipePrice(recipe, centerVerticalAlignment)
+            val alignment = when (direction) {
+                StartToEnd -> Alignment.CenterStart
+                EndToStart -> Alignment.CenterEnd
+            }
+
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(color)
+                    .padding(horizontal = 20.dp),
+                contentAlignment = alignment
+            ) {}
+        },
+        dismissContent = {
+            Card(
+                Modifier
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
+                    .combinedClickable(
+                        onLongClick = { onDeleteClick() },
+                        onClick = {}
+                    )
+            ) {
+                Row(
+                    Modifier
+                        .padding(16.dp)
+                        .animateContentSize()
+                ) {
+                    val centerVerticalAlignment = Modifier.align(Alignment.CenterVertically)
+                    ColorView(color = recipe.color, centerVerticalAlignment)
+                    RecipeName(
+                        recipe,
+                        centerVerticalAlignment
+                            .weight(1f)
+                            .padding(start = 8.dp)
+                    )
+                    VerticalDivider(centerVerticalAlignment)
+                    RecipePrice(recipe, centerVerticalAlignment)
+                }
+            }
         }
-    }
+    )
 }
 
 /**
@@ -237,6 +280,7 @@ fun BonusComponentsReview() {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview
 @Composable
 fun ComponentsPreview() {

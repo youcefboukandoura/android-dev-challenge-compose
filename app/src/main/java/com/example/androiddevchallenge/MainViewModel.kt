@@ -60,10 +60,16 @@ class MainViewModel : ViewModel() {
     }
 
     fun onColorFilterColor(color: Color) {
-        filterColor = color
-        filteredRecipes = recipes.filter {
-            it.color == color
+        if (filterColor == color) {
+            filterColor = null
+            filteredRecipes = recipes
+        } else {
+            filterColor = color
+            filteredRecipes = recipes.filter {
+                it.color == filterColor
+            }
         }
+
     }
 
     private fun onColorFilterColor() {
