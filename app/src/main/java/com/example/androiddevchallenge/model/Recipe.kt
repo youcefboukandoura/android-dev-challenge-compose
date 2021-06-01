@@ -8,5 +8,8 @@ data class Recipe(
     val name: String,
     // cents
     val price: Double,
-    val color: Color
-)
+    val color: Color,
+    var clicked: Boolean = false
+) {
+
+}

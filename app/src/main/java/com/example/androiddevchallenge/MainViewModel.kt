@@ -32,4 +32,22 @@ class MainViewModel : ViewModel() {
         recipes = recipes + createdRecipes
     }
 
+    fun onRecipeClick(index: Int) {
+        recipes = recipes.toMutableList().also {
+            it[index] = it[index].copy(clicked = true)
+        }
+    }
+
+    fun onDeleteRecipeClick(index: Int) {
+        recipes = recipes.toMutableList().also {
+            it.removeAt(index)
+        }
+    }
+
+    fun onCancelDeleteRecipeClick(index: Int) {
+        recipes = recipes.toMutableList().also {
+            it[index] = it[index].copy(clicked = false)
+        }
+    }
+
 }

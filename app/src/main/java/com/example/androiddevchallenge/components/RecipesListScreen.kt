@@ -37,6 +37,15 @@ fun RecipesListScreen(viewModel: MainViewModel) {
         } else {
             RecipeListView(
                 viewModel.recipes,
+                onRecipeClick = { recipeIndex ->
+                    viewModel.onRecipeClick(recipeIndex)
+                },
+                onDeleteRecipeClick = { recipeIndex ->
+                    viewModel.onDeleteRecipeClick(recipeIndex)
+                },
+                onCancelRecipeDeletionClick = { recipeIndex ->
+                    viewModel.onCancelDeleteRecipeClick(recipeIndex)
+                },
                 Modifier.weight(1f)
             )
         }
@@ -49,12 +58,28 @@ fun RecipesListScreen(viewModel: MainViewModel) {
  * Displays list of recipes
  */
 @Composable
-fun RecipeListView(recipeList: List<Recipe>, modifier: Modifier) {
+fun RecipeListView(
+    recipeList: List<Recipe>,
+    onRecipeClick: (recipeIndex: Int) -> Unit,
+    onDeleteRecipeClick: (recipeIndex: Int) -> Unit,
+    onCancelRecipeDeletionClick: (recipeIndex: Int) -> Unit,
+    modifier: Modifier
+
+) {
     LazyColumn(
         modifier = modifier.background(DarkGray)
     ) {
         items(recipeList.size) { index ->
-            RecipeCard(recipeList[index])
+            // not sure if I should save click property in mode
+            val recipe = recipeList[index]
+            if (!recipe.clicked) {
+                RecipeCard(recipe, onClick = { onRecipeClick(index) })
+            } else {
+                ConfirmDeletionCard(
+                    recipe,
+                    onClick = { onDeleteRecipeClick(index) },
+                    onCancelRecipeDeletionClick = { onCancelRecipeDeletionClick(index) })
+            }
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -91,16 +116,13 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
             .fillMaxWidth()
             .combinedClickable(
                 onLongClick = {
-                    /* TODO ask to remove the item using ConfirmDeletionCard */
+                    println("on Long click")
                 },
-                onClick = {}
+                onClick = {
+                    onClick()
+                }
             )
     ) {
-        val recipe = Recipe(
-            name = recipe.name,
-            price = recipe.price,
-            color = recipe.color
-        )
         Row(
             Modifier
                 .padding(16.dp)
@@ -124,12 +146,11 @@ fun RecipeCard(recipe: Recipe, onClick: () -> Unit = {}) {
  * Card which shows a request to remove a particular recipe from the list
  */
 @Composable
-fun ConfirmDeletionCard(onClick: () -> Unit = {}) {
-    val recipeToDelete = Recipe(
-        name = RecipesDataGenerator.names.random(),
-        price = RecipesDataGenerator.randomPrice,
-        color = RecipesDataGenerator.randomColor
-    )
+fun ConfirmDeletionCard(
+    recipeToDelete: Recipe,
+    onClick: () -> Unit = {},
+    onCancelRecipeDeletionClick: () -> Unit = {}
+) {
     Card(
         Modifier
             .fillMaxWidth()
@@ -153,10 +174,10 @@ fun ConfirmDeletionCard(onClick: () -> Unit = {}) {
             ) {
                 val weightModifier = Modifier.weight(1f)
                 ConfirmationButton(text = "Yes", modifier = weightModifier) {
-                    /* TODO remove this item from the list */
+                    onClick()
                 }
                 ConfirmationButton(text = "No", modifier = weightModifier) {
-                    /* TODO return to RecipeCard */
+                    onCancelRecipeDeletionClick()
                 }
             }
         }
@@ -222,7 +243,7 @@ fun ComponentsPreview() {
             Column {
                 RecipeCard(RecipesDataGenerator.generateRecipe())
                 Spacer(modifier = Modifier.size(8.dp))
-                ConfirmDeletionCard()
+                ConfirmDeletionCard(RecipesDataGenerator.generateRecipe())
             }
         }
     }
