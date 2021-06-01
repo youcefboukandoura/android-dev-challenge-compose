@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.androiddevchallenge.MainViewModel
 import com.example.androiddevchallenge.model.Recipe
 import com.example.androiddevchallenge.ui.theme.DarkGray
 import com.example.androiddevchallenge.ui.theme.MyTheme
@@ -63,7 +64,7 @@ fun RecipePrice(
  * Static box with Price + Button
  */
 @Composable
-fun BottomView() {
+fun BottomView(viewModel: MainViewModel) {
     Column {
         Row(
             Modifier
@@ -77,7 +78,7 @@ fun BottomView() {
             )
             Text(text = "$ X", color = MaterialTheme.colors.onSurface)
         }
-        AddButton()
+        AddButton(onAddRecipeClick = {viewModel.onAddRecipe()})
     }
 
 }
@@ -125,7 +126,7 @@ fun ComponentsPreview2() {
                 RecipePrice(recipe = recipe)
                 RecipeName(recipe = recipe)
                 VerticalDivider(modifier = Modifier.padding(16.dp))
-                BottomView()
+                BottomView(MainViewModel())
             }
         }
     }

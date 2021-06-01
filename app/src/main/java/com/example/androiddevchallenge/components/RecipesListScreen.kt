@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.androiddevchallenge.MainViewModel
 import com.example.androiddevchallenge.model.Recipe
 import com.example.androiddevchallenge.model.RecipesDataGenerator
 import com.example.androiddevchallenge.ui.theme.DarkGray
@@ -26,16 +27,21 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
  * Main task screen composable
  */
 @Composable
-fun RecipesListScreen() {
+fun RecipesListScreen(viewModel: MainViewModel) {
     Column {
-        val emptyView = true
-        if (emptyView) {
+
+
+        println("recipe list ${viewModel.recipes.size}")
+        if (viewModel.recipes.isEmpty()) {
             EmptyView(Modifier.weight(1f))
         } else {
-            RecipeListView(Modifier.weight(1f))
+            RecipeListView(
+                viewModel.recipes,
+                Modifier.weight(1f)
+            )
         }
 
-        BottomView()
+        BottomView(viewModel)
     }
 }
 
@@ -43,11 +49,11 @@ fun RecipesListScreen() {
  * Displays list of recipes
  */
 @Composable
-fun RecipeListView(modifier: Modifier) {
+fun RecipeListView(recipeList: List<Recipe>, modifier: Modifier) {
     LazyColumn(
         modifier = modifier.background(DarkGray)
     ) {
-        items(0) {
+        items(recipeList.size) {
             RecipeCard()
             Spacer(
                 modifier = Modifier
@@ -62,9 +68,9 @@ fun RecipeListView(modifier: Modifier) {
  * Draws an "Add" button
  */
 @Composable
-fun AddButton() {
+fun AddButton(onAddRecipeClick: () -> Unit) {
     Button(
-        onClick = { /* TODO add a recipe */ },
+        onClick = { onAddRecipeClick() },
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .fillMaxWidth(),
@@ -226,6 +232,6 @@ fun ComponentsPreview() {
 @Composable
 fun ScreenPreview() {
     MyTheme {
-        RecipesListScreen()
+        RecipesListScreen(MainViewModel())
     }
 }

@@ -19,6 +19,9 @@ object RecipesDataGenerator {
         return list
     }
 
+    fun generateRecipe() = Recipe(name = names.random(), price = randomPrice, color = randomColor)
+
+
     val randomPrice: Double
         get() = ((Random.nextInt(500, 2000) / 5) * 5).toDouble()
 
