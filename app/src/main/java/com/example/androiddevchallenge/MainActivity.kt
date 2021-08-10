@@ -18,9 +18,9 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.androiddevchallenge.components.WeeklyNavView
 import com.example.androiddevchallenge.sample.generateWeekList
@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
 // Start building your app here!
 @Composable
 fun MyApp(viewModel: MainViewModel) {
-    Surface(color = MaterialTheme.colors.background) {
+    Surface(color = Color.White) {
         WeeklyNavView(weekList = viewModel.weekList)
     }
 }
