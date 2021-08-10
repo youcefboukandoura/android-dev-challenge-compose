@@ -8,6 +8,6 @@ data class Week(
 )
 
 sealed class WeekType() {
-    data class PastWeek(val isSelected: Boolean): WeekType()
-    data class FutureWeek(val isSelected: Boolean): WeekType()
+    data class PastWeek(val isSelected: Boolean) : WeekType()
+    data class FutureWeek(val isSelected: Boolean) : WeekType()
 }
