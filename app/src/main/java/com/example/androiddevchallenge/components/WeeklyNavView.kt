@@ -1,5 +1,6 @@
 package com.example.androiddevchallenge.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
@@ -15,10 +16,18 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
 fun WeeklyNavView(weekList: List<Week>, onClick: (week: Week) -> Unit = {}, selectedWeek: Week?) {
     LazyRow {
         items(weekList.size) { item ->
-            when (weekList[item].type) {
-                is WeekType.FutureWeek -> FutureWeekItemView(weekList[item], onClick, selectedWeek)
-                else -> {
-                    PastWeekItemView(weekList[item], onClick, selectedWeek)
+            val week = weekList[item]
+            Box() {
+                when (week.type) {
+                    is WeekType.FutureWeek -> FutureWeekItemView(
+                        weekList[item],
+                        onClick,
+                        selectedWeek
+                    )
+                    else -> PastWeekItemView(weekList[item], onClick, selectedWeek)
+                }
+                if (week == selectedWeek) {
+                    SelectedWeekItemView()
                 }
             }
         }

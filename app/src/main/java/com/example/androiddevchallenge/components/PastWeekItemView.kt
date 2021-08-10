@@ -26,23 +26,22 @@ import com.example.androiddevchallenge.ui.theme.shapes
  */
 @Composable
 fun PastWeekItemView(week: Week, onClick: (week: Week) -> Unit, selectedWeek: Week?) {
-    if (week == selectedWeek) {
-        SelectedWeekItemView(week = week)
-    } else {
-        val stroke = Stroke(
-            width = 2f,
-            pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
-        )
-        Box(
-            modifier = Modifier
-                .width(90.dp)
-                .height(90.dp)
-                .padding(8.dp)
-                .border(0.dp, Color.Transparent, shape = shapes.medium)
-                .clickable { onClick(week) },
 
-            contentAlignment = Alignment.Center
-        ) {
+    val stroke = Stroke(
+        width = 2f,
+        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+    )
+    Box(
+        modifier = Modifier
+            .width(90.dp)
+            .height(90.dp)
+            .padding(8.dp)
+            .border(0.dp, Color.Transparent, shape = shapes.medium)
+            .clickable { onClick(week) },
+
+        contentAlignment = Alignment.Center
+    ) {
+        if (week != selectedWeek) {
             Canvas(
                 modifier = Modifier
                     .fillMaxSize()
@@ -54,26 +53,26 @@ fun PastWeekItemView(week: Week, onClick: (week: Week) -> Unit, selectedWeek: We
                     cornerRadius = CornerRadius(8f, 8f)
                 )
             }
-            Column {
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
+        }
+        Column {
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
 
-                    text = week.weekDay,
-                    Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                )
-                Text(
-                    text = week.day,
-                    Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                )
-                Text(
-                    text = week.month,
-                    Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(modifier = Modifier.weight(1f))
-            }
+                text = week.weekDay,
+                Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = week.day,
+                Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = week.month,
+                Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+            )
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }
