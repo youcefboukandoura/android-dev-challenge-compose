@@ -45,7 +45,10 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MyApp(viewModel: MainViewModel) {
     Surface(color = Color.White) {
-        WeeklyNavView(weekList = viewModel.weekList)
+        WeeklyNavView(
+            weekList = viewModel.weekList,
+            onClick = { week -> viewModel.selectWeek(week) }
+        )
     }
 }
 

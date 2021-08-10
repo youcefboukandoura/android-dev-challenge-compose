@@ -2,6 +2,7 @@ package com.example.androiddevchallenge.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -22,18 +23,19 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
  * Main task screen composable
  */
 @Composable
-fun PastWeekItemView(item: Week) {
+fun PastWeekItemView(week: Week, onClick: (week: Week) -> Unit) {
 
     val stroke = Stroke(
         width = 2f,
         pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
     )
-    println(item)
+    println(week)
     Box(
         modifier = Modifier
             .width(90.dp)
             .height(90.dp)
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { onClick(week) },
 
         contentAlignment = Alignment.Center
     ) {
@@ -48,17 +50,17 @@ fun PastWeekItemView(item: Week) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
 
-                text = item.weekDay.toString(),
+                text = week.weekDay.toString(),
                 Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = item.day,
+                text = week.day,
                 Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = item.month,
+                text = week.month,
                 Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
@@ -71,6 +73,9 @@ fun PastWeekItemView(item: Week) {
 @Composable
 fun PastWeekItemViewPreview() {
     MyTheme {
-        PastWeekItemView(item = Week("SAT", "1", "JUL", WeekType.PastWeek(false)))
+        PastWeekItemView(
+            week = Week("SAT", "1", "JUL", WeekType.PastWeek(false)),
+            onClick = {}
+        )
     }
 }

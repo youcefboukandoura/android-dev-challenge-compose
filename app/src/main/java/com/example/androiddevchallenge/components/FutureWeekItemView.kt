@@ -2,6 +2,7 @@ package com.example.androiddevchallenge.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
@@ -21,16 +22,15 @@ import com.example.androiddevchallenge.ui.theme.primary200
  * Main task screen composable
  */
 @Composable
-fun FutureWeekItemView(item: Week) {
-
-    println(item)
+fun FutureWeekItemView(week: Week, onClick: (week: Week) -> Unit) {
     Box(
         modifier = Modifier
             .width(90.dp)
             .height(90.dp)
             .padding(8.dp)
             .background(primary200)
-            .border(0.dp, Color.Transparent, shape = RoundedCornerShape(8.dp)),
+            .border(0.dp, Color.Transparent, shape = RoundedCornerShape(8.dp))
+            .clickable { onClick(week) },
 
         contentAlignment = Alignment.Center
     ) {
@@ -38,17 +38,17 @@ fun FutureWeekItemView(item: Week) {
             Spacer(modifier = Modifier.weight(1f))
             Text(
 
-                text = item.weekDay.toString(),
+                text = week.weekDay.toString(),
                 Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = item.day,
+                text = week.day,
                 Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
             Text(
-                text = item.month,
+                text = week.month,
                 Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
@@ -61,6 +61,9 @@ fun FutureWeekItemView(item: Week) {
 @Composable
 fun FutureWeekItemViewPreview() {
     MyTheme {
-        FutureWeekItemView(item = Week("SAT", "1", "JUL", WeekType.FutureWeek(false)))
+        FutureWeekItemView(
+            week = Week("SAT", "1", "JUL", WeekType.FutureWeek(false)),
+            onClick = {}
+        )
     }
 }
