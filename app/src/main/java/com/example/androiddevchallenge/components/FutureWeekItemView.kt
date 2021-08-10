@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,19 +36,21 @@ fun FutureWeekItemView(week: Week, onClick: (week: Week) -> Unit, selectedWeek: 
         Column {
             Spacer(modifier = Modifier.weight(1f))
             Text(
-
-                text = week.weekDay.toString(),
+                text = week.weekDay,
                 Modifier.fillMaxWidth(),
+                fontWeight = FontWeight.Light,
                 textAlign = TextAlign.Center,
             )
             Text(
                 text = week.day,
                 Modifier.fillMaxWidth(),
+                fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
             )
             Text(
                 text = week.month,
                 Modifier.fillMaxWidth(),
+                fontWeight = FontWeight.Light,
                 textAlign = TextAlign.Center,
             )
             Spacer(modifier = Modifier.weight(1f))

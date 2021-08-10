@@ -23,9 +23,4 @@ val purple700 = Color(0xFF3700B3)
 val teal200 = Color(0xFF03DAC5)
 
 val primary200 = Color(android.graphics.Color.parseColor("#E4FABF"))
-// <color name="primary_300">#D2F895</color>
-// <color name="primary_400">#96DC14</color>
-// <color name="primary_500">#00A846</color>
-// <color name="primary_600">#067A46</color>
-// <color name="primary_700">#056835</color>
-// <color name="primary_800">#035624</color>
+val primary400 = Color(android.graphics.Color.parseColor("#96DC14"))

@@ -14,7 +14,6 @@ import com.example.androiddevchallenge.ui.theme.shapes
 
 @Composable
 fun SelectedWeekItemView() {
-
     Box(
         modifier = Modifier
             .width(94.dp)
