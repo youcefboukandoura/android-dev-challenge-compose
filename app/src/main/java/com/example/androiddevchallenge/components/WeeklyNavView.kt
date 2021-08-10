@@ -12,13 +12,13 @@ import com.example.androiddevchallenge.ui.theme.MyTheme
  * Main task screen composable
  */
 @Composable
-fun WeeklyNavView(weekList: List<Week>, onClick: (week: Week) -> Unit = {}) {
+fun WeeklyNavView(weekList: List<Week>, onClick: (week: Week) -> Unit = {}, selectedWeek: Week?) {
     LazyRow {
         items(weekList.size) { item ->
             when (weekList[item].type) {
-                is WeekType.FutureWeek -> FutureWeekItemView(weekList[item], onClick)
+                is WeekType.FutureWeek -> FutureWeekItemView(weekList[item], onClick, selectedWeek)
                 else -> {
-                    PastWeekItemView(weekList[item], onClick)
+                    PastWeekItemView(weekList[item], onClick, selectedWeek)
                 }
             }
         }
@@ -29,6 +29,6 @@ fun WeeklyNavView(weekList: List<Week>, onClick: (week: Week) -> Unit = {}) {
 @Composable
 fun WeeklyNavViewPreview() {
     MyTheme {
-        WeeklyNavView(generateWeekList())
+        WeeklyNavView(generateWeekList(), selectedWeek = null)
     }
 }

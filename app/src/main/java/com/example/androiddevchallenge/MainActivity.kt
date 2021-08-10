@@ -47,7 +47,8 @@ fun MyApp(viewModel: MainViewModel) {
     Surface(color = Color.White) {
         WeeklyNavView(
             weekList = viewModel.weekList,
-            onClick = { week -> viewModel.selectWeek(week) }
+            onClick = { week -> viewModel.selectWeek(week) },
+            selectedWeek = viewModel.selectedWeek
         )
     }
 }
@@ -56,7 +57,7 @@ fun MyApp(viewModel: MainViewModel) {
 @Composable
 fun LightPreview() {
     MyTheme {
-        WeeklyNavView(weekList = generateWeekList())
+        WeeklyNavView(weekList = generateWeekList(), selectedWeek = null)
     }
 }
 

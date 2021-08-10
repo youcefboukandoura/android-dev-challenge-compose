@@ -7,7 +7,7 @@ data class Week(
     val type: WeekType
 )
 
-sealed class WeekType(open val isSelected: Boolean) {
-    data class PastWeek(override val isSelected: Boolean) : WeekType(isSelected)
-    data class FutureWeek(override val isSelected: Boolean) : WeekType(isSelected)
+sealed class WeekType {
+    object PastWeek : WeekType()
+    object FutureWeek : WeekType()
 }

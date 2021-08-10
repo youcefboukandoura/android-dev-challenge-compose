@@ -18,14 +18,14 @@ class MainViewModel {
 }
 
 val mockedWeeksList = listOf<Week>(
-    Week("WED", "04", "AUG", WeekType.PastWeek(false)),
-    Week("WED", "11", "AUG", WeekType.FutureWeek(true)),
-    Week("WED", "18", "AUG", WeekType.FutureWeek(false)),
-    Week("WED", "25", "AUG", WeekType.FutureWeek(false)),
-    Week("WED", "01", "SEP", WeekType.FutureWeek(false)),
-    Week("WED", "08", "SEP", WeekType.FutureWeek(false)),
-    Week("WED", "15", "SEP", WeekType.FutureWeek(false)),
-    Week("WED", "22", "SEP", WeekType.FutureWeek(false)),
-    Week("WED", "29", "SEP", WeekType.FutureWeek(false)),
-    Week("WED", "06", "OCT", WeekType.FutureWeek(false))
+    Week("WED", "04", "AUG", WeekType.PastWeek),
+    Week("WED", "11", "AUG", WeekType.FutureWeek),
+    Week("WED", "18", "AUG", WeekType.FutureWeek),
+    Week("WED", "25", "AUG", WeekType.FutureWeek),
+    Week("WED", "01", "SEP", WeekType.FutureWeek),
+    Week("WED", "08", "SEP", WeekType.FutureWeek),
+    Week("WED", "15", "SEP", WeekType.FutureWeek),
+    Week("WED", "22", "SEP", WeekType.FutureWeek),
+    Week("WED", "29", "SEP", WeekType.FutureWeek),
+    Week("WED", "06", "OCT", WeekType.FutureWeek)
 )
