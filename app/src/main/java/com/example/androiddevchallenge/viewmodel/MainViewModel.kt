@@ -9,5 +9,9 @@ class MainViewModel {
 
     val weekList: List<Week> by mutableStateOf(listOf(Week("SAT", "1", "JUL")))
 
-//    val weekSelected: Week by mutableStateOf()
+    var selectedWeek: Week? by mutableStateOf(null)
+
+    fun selectWeek(week: Week) {
+        selectedWeek = week
+    }
 }
